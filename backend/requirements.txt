@@ -1,0 +1,41 @@
+fastapi==0.136.3
+uvicorn[standard]==0.48.0
+pydantic-settings==2.12.0
+python-jose[cryptography]==3.5.0
+supabase==2.30.1
+boto3==1.43.22
+python-multipart==0.0.30
+noisereduce==3.0.3
+librosa==0.11.0
+soundfile==0.13.1
+pedalboard==0.9.23
+pydub==0.25.1
+httpx==0.28.1
+python-dotenv==1.2.2
+numpy>=1.24.0
+scipy>=1.11.0
+av>=12.0.0
+lameenc>=1.4.2
+pyloudnorm>=0.1.1
+gradio_client>=0.9.0
+anthropic>=0.28.0
+huggingface_hub>=0.26.0
+pyfluidsynth>=1.3.3
+# tinysoundfont: pip-installable SoundFont synth with a BUNDLED native binary
+# (no system FluidSynth/DLL needed). This is the active sample engine — it
+# renders real instruments from app/assets/soundfont.sf2 on every platform.
+tinysoundfont>=0.3.7
+# pyworld enables formant-preserving pitch correction (recommended for Linux/Render)
+# Remove if compilation fails: the code falls back gracefully without it
+pyworld>=0.3.4
+
+# ── ML classifiers (production-safe: light, no GPU required) ─────────────────
+scikit-learn>=1.3.0   # loads trained genre/mood/energy models at inference time
+joblib>=1.3.0         # deserializes .joblib model files
+pandas>=2.0.0         # only needed for feature loading on startup; tree models are tiny
+pyarrow>=12.0.0       # Parquet backend
+
+# ── CREPE pitch detection (optional, improves vocal analysis quality) ─────────
+# Adds ~80 MB RAM usage. ml_analyzer.py falls back to librosa.yin if not installed.
+# On Render free tier (512 MB): comment out if hitting memory limits.
+# crepe>=0.0.15

@@ -1,0 +1,26 @@
+{
+  "808": {
+    "file": "808.wav",
+    "f0_hz": 38.7493,
+    "midi": 27,
+    "note": "D#1",
+    "source": "Bass Shot -  (30).wav",
+    "len_s": 4.0
+  },
+  "808_alt": {
+    "file": "808_alt.wav",
+    "f0_hz": 32.7729,
+    "midi": 24,
+    "note": "C1",
+    "source": "Bass Shot -  (34).wav",
+    "len_s": 4.0
+  },
+  "pluck": {
+    "file": "pluck.wav",
+    "f0_hz": 65.4064,
+    "midi": 36,
+    "note": "C2",
+    "source": "Bass Shot -  (24).wav",
+    "len_s": 2.081
+  }
+}

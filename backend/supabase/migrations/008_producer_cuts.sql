@@ -1,0 +1,28 @@
+-- Producer Cuts: the DreamStage creative-session model.
+--
+-- DreamStage is an AI producer, not a 3-attempt beat generator. Every generation
+-- is a "Producer Cut" that is kept forever — the artist can replay, compare,
+-- favorite, restore, and branch from any past cut. This column stores the full,
+-- ordered history of cuts for a project as a JSON array; each element:
+--
+--   {
+--     "cut": 3,                       -- global sequential id within the project
+--     "label": "Cut 3",               -- display label ("Cut 3", branches: "Cut 3A")
+--     "beat_key": "projects/<id>/cut_3.wav",
+--     "genre": "rnb_neo_soul",
+--     "genre_label": "Neo Soul",
+--     "key": "A minor",
+--     "tempo": 78,
+--     "emotion": "intimate",
+--     "score": 82.5,
+--     "parent_cut": null,             -- the cut this was branched from (lineage)
+--     "favorite": false,
+--     "created_at": "2026-06-17T..."
+--   }
+--
+-- Kept as JSONB on projects (not a new table) so it ships with the project row
+-- and the existing graceful-degradation pattern in beat.py applies: if this
+-- column is absent the writes are silently skipped and cuts are reconstructed
+-- from beat_attempts/beat_genre_history.
+
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS producer_cuts JSONB DEFAULT '[]'::jsonb;

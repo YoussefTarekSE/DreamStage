@@ -1,0 +1,6 @@
+# Trained model files (.joblib) go here.
+# These are NOT committed to git (see .gitignore).
+# Generate them by running:
+#   python backend/ai/dataset_pipeline/download.py --datasets gtzan
+#   python backend/ai/dataset_pipeline/extract_features.py --dataset gtzan
+#   python backend/ai/training/train_classifiers.py

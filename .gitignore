@@ -1,0 +1,76 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+!**/.env.example
+*.secret
+*.secrets
+*.token
+*.credentials
+secrets/
+**/secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+*migration-token*
+
+# Frontend
+frontend/.next/
+frontend/node_modules/
+frontend/out/
+frontend/build/
+frontend/.vercel/
+frontend/.env*
+!frontend/.env.example
+
+# Backend
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/.env*
+!backend/.env.example
+
+# AI training data: large raw datasets are only needed to retrain.
+# Trained models in backend/ai/models/*.joblib are shipped with the app.
+backend/ai/data/
+
+# SoundFont (~31 MB): fetched by backend/setup_soundfont.sh during setup.
+backend/app/assets/*.sf2
+
+# FL Studio-derived drum kits are local-only and not redistributable.
+backend/app/assets/drums/fl/
+
+# General generated files and caches
+*.pyc
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage/
+.cache/
+.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.tmp
+*.temp
+*.log
+.DS_Store
+Thumbs.db
+
+# Vendored ACE-Step fork: its own git repo + multi-GB model checkpoints.
+# Clone it separately per README instead of tracking it here.
+/acestep/
+
+# Local ACE-Step evaluation scratch space (large generated audio, run logs).
+/acestep_eval/
+
+# Scratch demo audio generated during development, not app assets.
+backend/_demo_*.wav
+backend/_demo_*.mp3
+
+# Internal working doc, not part of the public repo.
+/DreamStage_Project_Documentation_V1.docx
