@@ -3,20 +3,27 @@
 ## Backend
 
 1. Create a Python 3.12 environment.
-2. Install dependencies:
+2. On Linux, install PortAudio's headers first — `tinysoundfont` (the sample
+   synth engine) hard-depends on `pyaudio`, which has no Linux wheel on PyPI
+   and must build from source against `portaudio.h`:
+   ```bash
+   sudo apt-get update && sudo apt-get install -y portaudio19-dev
+   ```
+   (Not needed on Windows/macOS, where pyaudio ships prebuilt wheels.)
+3. Install dependencies:
    ```powershell
    cd backend
    pip install -r requirements.txt
    ```
-3. Configure environment variables from `.env.example`.
-4. Run Supabase migrations:
+4. Configure environment variables from `.env.example`.
+5. Run Supabase migrations:
    ```powershell
    cd C:\path\to\dreamstage
    $env:SUPABASE_MANAGEMENT_TOKEN="..."
    $env:SUPABASE_PROJECT_REF="..."
    .\scripts\migrate.ps1
    ```
-5. Start the API:
+6. Start the API:
    ```powershell
    cd backend
    uvicorn app.main:app --host 0.0.0.0 --port 8000
