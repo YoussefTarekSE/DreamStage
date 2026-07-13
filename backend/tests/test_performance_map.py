@@ -35,6 +35,12 @@ ANALYSIS = {
     "density": 3.0, "swing_ratio": 0.5,
 }
 
+# This module does real audio synthesis + mastering (pyloudnorm, full DSP
+# chain), which is legitimately CPU-heavy — on GitHub Actions' shared runners
+# it can run well past the global 45s per-test default (see CI's --timeout
+# flag). Give the whole file more headroom rather than one test at a time.
+pytestmark = pytest.mark.timeout(180)
+
 
 def _vocal(bar_amps, sung_frac=0.8, f0=220.0):
     """A fake 'vocal': one sung phrase per bar at the given amplitude, with a
