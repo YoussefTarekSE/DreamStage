@@ -52,7 +52,7 @@ jobs:
         run: |
           cd backend
           set +e
-          python -m pytest 2>&1 | tee /tmp/pytest.log
+          python -m pytest --timeout=45 --timeout-method=thread 2>&1 | tee /tmp/pytest.log
           status=${PIPESTATUS[0]}
           set -e
           if [ "$status" -ne 0 ]; then

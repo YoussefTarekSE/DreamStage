@@ -1,3 +1,4 @@
 # Test-only dependencies. Installed in CI in addition to requirements.txt;
 # NOT part of the production build (see render.yaml).
 pytest==9.1.0
+pytest-timeout>=2.3.0
