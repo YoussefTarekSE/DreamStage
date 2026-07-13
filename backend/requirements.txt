@@ -27,7 +27,12 @@ pyfluidsynth>=1.3.3
 tinysoundfont>=0.3.7
 # pyworld enables formant-preserving pitch correction (recommended for Linux/Render)
 # Remove if compilation fails: the code falls back gracefully without it
-pyworld>=0.3.4
+# Commented out: PyPI ships pyworld as Windows-only wheels (no manylinux/musllinux
+# wheel), so a Linux install must build from sdist, which fails fast on GitHub
+# Actions' ubuntu-latest runner during PEP 517 build-prep. Install manually on
+# Linux/Render if you need this (a C++ toolchain + numpy/cython must be present
+# first) — the app falls back to librosa.yin-based pitch handling without it.
+# pyworld>=0.3.4
 
 # ── ML classifiers (production-safe: light, no GPU required) ─────────────────
 scikit-learn>=1.3.0   # loads trained genre/mood/energy models at inference time
