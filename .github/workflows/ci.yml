@@ -50,7 +50,15 @@ jobs:
       - name: Run backend tests
         run: |
           cd backend
-          python -m pytest
+          set +e
+          python -m pytest 2>&1 | tee /tmp/pytest.log
+          status=${PIPESTATUS[0]}
+          set -e
+          if [ "$status" -ne 0 ]; then
+            ERR=$(tail -c 1800 /tmp/pytest.log | tr '\n' ' ')
+            echo "::error::pytest failed (exit $status): ${ERR}"
+            exit 1
+          fi
 
   frontend:
     runs-on: ubuntu-latest
