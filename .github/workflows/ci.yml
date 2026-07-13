@@ -28,16 +28,15 @@ jobs:
           python-version-file: .python-version
       - name: Install backend dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r backend/requirements.txt 2>&1 | tee /tmp/pip_install.log || {
-            {
-              echo '## pip install failure (last 200 lines)'
-              echo '```'
-              tail -n 200 /tmp/pip_install.log
-              echo '```'
-            } >> "$GITHUB_STEP_SUMMARY"
+          set +e
+          { python -m pip install --upgrade pip && pip install -r backend/requirements.txt; } 2>&1 | tee /tmp/pip_install.log
+          status=${PIPESTATUS[0]}
+          set -e
+          if [ "$status" -ne 0 ]; then
+            ERR=$(tail -c 1500 /tmp/pip_install.log | tr '\n' ' ')
+            echo "::error::pip install failed (exit $status): ${ERR}"
             exit 1
-          }
+          fi
       - name: Validate backend imports and configuration
         run: |
           cd backend
