@@ -15,6 +15,8 @@
    cd backend
    pip install -r requirements.txt
    ```
+   To run the test suite, also install `pip install -r requirements-dev.txt`
+   (pytest; not needed to run the app itself).
 4. Configure environment variables from `.env.example`.
 5. Run Supabase migrations:
    ```powershell

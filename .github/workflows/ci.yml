@@ -31,7 +31,7 @@ jobs:
       - name: Install backend dependencies
         run: |
           set +e
-          { python -m pip install --upgrade pip && pip install -r backend/requirements.txt; } 2>&1 | tee /tmp/pip_install.log
+          { python -m pip install --upgrade pip && pip install -r backend/requirements.txt -r backend/requirements-dev.txt; } 2>&1 | tee /tmp/pip_install.log
           status=${PIPESTATUS[0]}
           set -e
           if [ "$status" -ne 0 ]; then
