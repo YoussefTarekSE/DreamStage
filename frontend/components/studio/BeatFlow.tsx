@@ -54,12 +54,19 @@ export function BeatFlow({ projectId, existingBeatUrl, hasExistingBeat = false, 
   const [accepting, setAccepting] = useState(false);
   const [acceptError, setAcceptError] = useState("");
   const [genElapsed, setGenElapsed] = useState(0);
+  const [prevStep, setPrevStep] = useState(step);
+
+  // Reset the counter during render on entry into "generating" (adjusting
+  // state in response to a change, rather than resetting it from the effect).
+  if (step !== prevStep) {
+    setPrevStep(step);
+    if (step === "generating") setGenElapsed(0);
+  }
 
   // Real elapsed-time counter for the generating screen (honest progress —
   // neural cuts take 1-2 minutes and the copy is staged off actual time).
   useEffect(() => {
     if (step !== "generating") return;
-    setGenElapsed(0);
     const t0 = Date.now();
     const timer = window.setInterval(
       () => setGenElapsed(Math.floor((Date.now() - t0) / 1000)), 1000);

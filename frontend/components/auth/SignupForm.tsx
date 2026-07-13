@@ -35,28 +35,30 @@ export function SignupForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [step, setStep] = useState<Step>("form");
+  const [step, setStep] = useState<Step>(() =>
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("step") === "language"
+      ? "language"
+      : "form"
+  );
   const [availability, setAvailability] = useState<Availability>("idle");
+  const [checkedFor, setCheckedFor] = useState("");
 
   const passwordValidation = useMemo(() => validatePassword(password), [password]);
   const usernameValidation = useMemo(() => validateUsername(username), [username]);
   const normalizedUsername = normalizeUsername(username);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (new URLSearchParams(window.location.search).get("step") === "language") {
-      setStep("language");
-    }
-  }, []);
+  // Adjust availability during render when the relevant inputs change, instead
+  // of resetting it from inside the effect below (avoids an extra render pass).
+  if (checkedFor !== normalizedUsername) {
+    setCheckedFor(normalizedUsername);
+    setAvailability(username && usernameValidation.valid ? "checking" : "idle");
+  }
 
   useEffect(() => {
+    if (!username || !usernameValidation.valid) return;
     let cancelled = false;
-    if (!username || !usernameValidation.valid) {
-      setAvailability("idle");
-      return;
-    }
 
-    setAvailability("checking");
     const timer = window.setTimeout(async () => {
       const supabase = createClient();
       const { data, error: rpcError } = await supabase.rpc("is_username_available", {
