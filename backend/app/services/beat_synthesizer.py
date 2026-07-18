@@ -1531,8 +1531,14 @@ def generate_beat(
     """
     # Seed: deterministic per-analysis-per-attempt for reproducibility,
     # but different on every attempt so the user never gets the same beat twice.
+    # Also reseeds numpy's global RNG (used directly by the kick/snare/hihat
+    # noise synthesis below) — without this, only the melodic/arrangement
+    # choices routed through RNG were reproducible, while the drum noise
+    # layer silently drew from whatever state numpy's global RNG was already
+    # in, breaking the "same take -> same beat" guarantee non-deterministically.
     if seed is not None:
         RNG.seed(seed)
+        np.random.seed(seed % (2 ** 32))
     else:
         # Process-STABLE hash of the analysis (crc32, NOT builtin hash() — that is
         # salted per-process by PYTHONHASHSEED, so the "same take → same beat"
@@ -1547,7 +1553,9 @@ def generate_beat(
                 and float(performance.get("confidence", 0) or 0) >= 0.35):
             base ^= (int(performance["seed"]) & 0xFFFFFFFF)
         offset = (attempt - 1) * 999_983  # large prime offset per attempt
-        RNG.seed((base + offset) % (2 ** 31))
+        combined_seed = (base + offset) % (2 ** 31)
+        RNG.seed(combined_seed)
+        np.random.seed(combined_seed)
 
     # Extract analysis fields
     if analysis:
